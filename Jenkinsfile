@@ -1,20 +1,25 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Branch Info') {
             steps {
-                echo "🛠️ Building the project"
+                echo "🚨 Running on branch: ${env.BRANCH_NAME}"
             }
         }
-        stage('Test') {
+        stage('Branch-Based Step') {
             steps {
-                echo "✅ Running tests"
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo "🚀 Deploying the project"
+                script {
+                    if (env.BRANCH_NAME == "main") {
+                        echo "🚀 Production Deployment"
+                    } else if (env.BRANCH_NAME.startsWith("feature")) {
+                        echo "🧪 Feature Branch Build"
+                    } else {
+                        echo "🔧 Misc branch build"
+                    	echo "📝 Code updated and pushed!" 
+}
+                }
             }
         }
     }
 }
+
